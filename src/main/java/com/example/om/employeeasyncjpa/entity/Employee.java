@@ -1,20 +1,25 @@
 package com.example.om.employeeasyncjpa.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Data
 @Entity
 @Table(name = "EMP")
 public class Employee implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itemidgenerator")
+    @SequenceGenerator(name = "itemidgenerator", sequenceName = "EMPNO_SEQUENCE", allocationSize = 1)
     @Column(name = "EMPNO")
     private Integer employeeId;
     @Column(name = "ENAME")
