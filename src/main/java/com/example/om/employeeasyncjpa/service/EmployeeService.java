@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,9 +55,22 @@ public class EmployeeService {
     }
 
     @Async
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public CompletableFuture<ResponseEntity<List<Employee>>> findByName(final String name) {
+        try {
+            val result = getRepository().findEmployeeByEmployeeName(name);
+            return CompletableFuture.completedFuture(ResponseEntity.ok(result));
+        } catch (final Exception ex) {
+            throw new CompletionException(ex);
+        }
+    }
+
+    @Async
     @Transactional
     public CompletableFuture<ResponseEntity<Employee>> save(final Employee employee) {
         try {
+            if (!CollectionUtils.isEmpty(employee.getAddresses()))
+                employee.getAddresses().forEach(address -> address.setEmployee(employee));
             val result = getRepository().save(employee);
             return CompletableFuture.completedFuture(ResponseEntity.status(201).body(result));
         } catch (final Exception ex) {
@@ -68,14 +82,14 @@ public class EmployeeService {
     @Async
     @Transactional
     public CompletableFuture<ResponseEntity<Employee>> update(final Integer employeeId, final Employee employee) {
-
         try {
             val result = getRepository().findById(employeeId);
             if (result.isPresent()) {
-                val id = result.get().getEmployeeId();
-                BeanUtils.copyProperties(employee, result.get());
-                result.get().setEmployeeId(id);
-                val e = getRepository().save(result.get());
+                final Employee em = result.get();
+                val id = em.getEmployeeId();
+                BeanUtils.copyProperties(employee, em);
+                em.setEmployeeId(id);
+                val e = getRepository().save(em);
                 return CompletableFuture.completedFuture(ResponseEntity.ok(e));
             } else {
                 return CompletableFuture.completedFuture(ResponseEntity.notFound().build());

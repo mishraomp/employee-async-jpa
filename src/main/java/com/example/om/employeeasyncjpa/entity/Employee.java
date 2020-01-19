@@ -1,25 +1,25 @@
 package com.example.om.employeeasyncjpa.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @Entity
 @Table(name = "EMP")
 public class Employee implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itemidgenerator")
-    @SequenceGenerator(name = "itemidgenerator", sequenceName = "EMPNO_SEQUENCE", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "employeeIdGenerator")
+    @SequenceGenerator(name = "employeeIdGenerator", sequenceName = "EMPNO_SEQUENCE", allocationSize = 1)
     @Column(name = "EMPNO")
     private Integer employeeId;
     @Column(name = "ENAME")
@@ -36,4 +36,6 @@ public class Employee implements Serializable {
     private Integer comm;
     @Column(name = "DEPTNO")
     private String departmentNum;
+    @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Address.class)
+    private List<Address> addresses;
 }

@@ -28,6 +28,11 @@ public class EmployeeEndpointImpl implements IEmployeeEndpoint {
     }
 
     @Override
+    public CompletableFuture<ResponseEntity<List<Employee>>> findByName(final String employeeName) {
+        return getService().findByName(employeeName);
+    }
+
+    @Override
     public CompletableFuture<ResponseEntity<Employee>> findById(final Integer id) {
         return getService().findById(id);
     }

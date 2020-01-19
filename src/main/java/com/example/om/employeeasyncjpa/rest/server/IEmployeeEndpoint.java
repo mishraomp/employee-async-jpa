@@ -1,6 +1,7 @@
 package com.example.om.employeeasyncjpa.rest.server;
 
 import com.example.om.employeeasyncjpa.entity.Employee;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,9 @@ public interface IEmployeeEndpoint {
 
     @GetMapping
     CompletableFuture<List<Employee>> findAll();
+
+    @GetMapping(path = "/name")
+    CompletableFuture<ResponseEntity<List<Employee>>> findByName(@Param("employeeName") String employeeName);
 
     @GetMapping(path = "/{id}")
     CompletableFuture<ResponseEntity<Employee>> findById(@PathVariable Integer id);
