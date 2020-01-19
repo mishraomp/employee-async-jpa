@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -30,4 +31,6 @@ public class Employee implements Serializable {
     private Integer comm;
     @Column(name = "DEPTNO")
     private String departmentNum;
+    @OneToMany(mappedBy = "employee")
+    private List<Address> addresses;
 }

@@ -3,6 +3,7 @@ package com.example.om.employeeasyncjpa.service;
 import com.example.om.employeeasyncjpa.entity.Employee;
 import com.example.om.employeeasyncjpa.repository.EmployeeRepository;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.util.concurrent.CompletionException;
 import static lombok.AccessLevel.PRIVATE;
 
 @Service
+@Slf4j
 public class EmployeeService {
 
 
@@ -49,6 +51,7 @@ public class EmployeeService {
             val result = getRepository().findById(employeeId);
             return result.map(employee -> CompletableFuture.completedFuture(ResponseEntity.ok(employee))).orElseGet(() -> CompletableFuture.completedFuture(ResponseEntity.notFound().build()));
         } catch (final Exception ex) {
+            log.error("Error occurred during findById :: " + employeeId, ex);
             throw new CompletionException(ex);
         }
     }
