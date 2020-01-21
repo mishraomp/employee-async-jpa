@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.val;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -38,6 +42,18 @@ public class EmployeeService {
             List<Employee> employees = new ArrayList<>();
             getRepository().findAll().forEach(employees::add);
             return CompletableFuture.completedFuture(employees);
+        } catch (final Exception ex) {
+            throw new CompletionException(ex);
+        }
+    }
+
+    @Async
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public CompletableFuture<Page<Employee>> findAll(final Integer pageNumber, final Integer pageSize, final List<Sort.Order> sorts) {
+        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(sorts));
+        try {
+            val result = getRepository().findAll(paging);
+            return CompletableFuture.completedFuture(result);
         } catch (final Exception ex) {
             throw new CompletionException(ex);
         }

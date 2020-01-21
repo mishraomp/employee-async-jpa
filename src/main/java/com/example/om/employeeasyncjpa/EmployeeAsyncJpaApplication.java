@@ -25,6 +25,7 @@ public class EmployeeAsyncJpaApplication {
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		executor.setAwaitTerminationSeconds(30);
 		executor.setThreadNamePrefix("employeeAsyncJPA-");
+		executor.setKeepAliveSeconds(0);
 		executor.initialize();
 		return executor;
 	}

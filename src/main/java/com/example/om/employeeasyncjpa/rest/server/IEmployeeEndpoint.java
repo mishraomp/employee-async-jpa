@@ -1,6 +1,7 @@
 package com.example.om.employeeasyncjpa.rest.server;
 
 import com.example.om.employeeasyncjpa.entity.Employee;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,11 @@ public interface IEmployeeEndpoint {
 
     @GetMapping
     CompletableFuture<List<Employee>> findAll();
+
+    @GetMapping(path = "/page")
+    CompletableFuture<Page<Employee>> findAll(@RequestParam(defaultValue = "0") Integer pageNumber,
+                                              @RequestParam(defaultValue = "10") Integer pageSize,
+                                              @RequestParam String sortCriteriaJson);
 
     @GetMapping(path = "/name")
     CompletableFuture<ResponseEntity<List<Employee>>> findByName(@Param("employeeName") String employeeName);

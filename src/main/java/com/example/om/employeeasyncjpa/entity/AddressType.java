@@ -25,4 +25,12 @@ public class AddressType {
     @JsonIgnore
     @OneToMany(mappedBy = "addressType")
     private List<Address> addresses;
+
+    public AddressType(final AddressTypeEnum addressTypeEnum) {
+        this.addressTypeCode = addressTypeEnum.name();
+    }
+
+    public enum AddressTypeEnum {
+        HOME, OFFICE;
+    }
 }
