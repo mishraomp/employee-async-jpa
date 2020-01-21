@@ -31,11 +31,6 @@ public class EmployeeEndpointImpl implements IEmployeeEndpoint {
     }
 
     @Override
-    public CompletableFuture<List<Employee>> findAll() {
-        return getService().findAll();
-    }
-
-    @Override
     public CompletableFuture<Page<Employee>> findAll(final Integer pageNumber, final Integer pageSize, final String sortCriteriaJson) {
         final ObjectMapper mapper = new ObjectMapper();
         final List<Sort.Order> sorts = new ArrayList<>();

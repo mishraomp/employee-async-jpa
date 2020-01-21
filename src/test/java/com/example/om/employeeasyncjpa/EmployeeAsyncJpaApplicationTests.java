@@ -15,11 +15,11 @@ import static io.restassured.RestAssured.given;
 //@SpringBootTest
 class EmployeeAsyncJpaApplicationTests {
 
-    @Test
+   // @Test
     void contextLoads() {
     }
 
-    @Test
+   // @Test
     void testEmployeeSave() {
         val list = new ArrayList<Employee>();
         for (int i = 2; i < 50000; i++) {
@@ -33,7 +33,7 @@ class EmployeeAsyncJpaApplicationTests {
         });
     }
 
-    @Test
+    //@Test
     void testEmployeeGetAll() {
         val list = new ArrayList<Employee>();
         for (int i = 0; i < 100; i++) {
